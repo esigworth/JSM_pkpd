@@ -1,0 +1,50 @@
+---
+title: "Plotting Cases (Last Dose Subset)"
+author: "Elizabeth Sigworth"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r,results='hide', message=FALSE, warning=FALSE, echo=FALSE, error=FALSE, include=FALSE}
+source("R/three-compartment-model.R")
+source("R/plotting-predictions.R")
+
+#install.packages("psych",repos = "http://cran.us.r-project.org")
+library(psych)
+library(tableone)
+```
+
+```{r}
+tabone <- CreateTableOne(data=dems)
+print(tabone,nonnormal=names(dems))
+```
+
+
+To read the following plots, note that throughout, the X symbol represents observed data, and the box represents predictions. A black X is a training data point, a column of red symbols indicates the prediction did not match the observed count, and overlapping green symbols indicate the prediction matched the observed count.
+
+```{r}
+for(i in 1:length(par_opt_test_list_last_dose)){
+  plot_case_test(par_opt_test_list_last_dose[[i]]$case,
+                 par_opt_test_list_last_dose[[i]]$fit$par,
+                 predicted_list_last_dose[[i]])
+  legend(par('usr')[2], par('usr')[4], bty='n', xpd=NA,
+         legend = c("Observed", "Predicted", "Probability Density"), 
+         pch=c(4, 0, NA), fill=c(NA, NA, 'grey'),
+         border="white", pt.cex=1.5, pt.lwd=2)
+}
+```
+
+The following chunk calculates the weighted kappa for all predicted values:
+
+```{r}
+xp <- predicted_last_dose
+xo <- actual_last_dose
+levs <- union(unique(xp), unique(xo))
+nlev <- length(levs)
+wts <- matrix(c(0:4, .5, 0:3, 1, .5, 0:2, 1.5, 1, .5, 0:1, 2, 1.5, 1, .5, 0), 
+                nrow=5, byrow = TRUE)
+kappa_last_dose <- list(n=length(xp), xo=xo, xp=xp,
+                    agree=mean(xp==xo),
+                    agree1=mean(abs((xp) - (xo)) <= 1),
+                    kappa=cohen.kappa(x=cbind(xo,xp), w=wts))
+kappa_last_dose$kappa
+```

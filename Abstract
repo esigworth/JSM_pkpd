@@ -1,0 +1,8 @@
+A simultaneous PK/PD model for muscle relaxant using muscle twitch counts
+
+Elizabeth Sigworth, BA, Matthew S. Shotwell, PhD
+Vanderbilt University Department of Biostatistics
+JSM July 31, 2018 
+Vancouver, BC
+
+The use of neuromuscular blockade during surgery presents several challenges postoperatively, of most concern being the potential for postoperative pulmonary complications due to residual blockage not reversed prior to extubation. Physicians monitor patient paralysis throughout surgery using "train-of-four" (TOF) twitch counts. We propose a simultaneous PK/PD model for vecuronium concentration linked to a proportional odds logistic regression to predict TOF counts after the final dose of vecuronium. We use a Bayesian approach in our estimation with an error grid loss function as opposed to a 0-1 loss function. Model validation is performed within subjects, using all data collected prior to the final dose of vecuronium as training data and validating on TOF counts after the final dose. These data come from an observational cohort of 479 patients undergoing general anesthesia. We fit our model to 140 blockades, with 1255 train TOF counts and 335 test TOF counts. This model structure resulted in 76.1% of predictions being accurate to within one twitch count. These predictions can be used by physicians to improve the recovery process after the use of neuromuscular blockade.
